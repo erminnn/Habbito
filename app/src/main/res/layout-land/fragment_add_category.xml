@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-    <data>
-        <variable
-            name="addCategory"
-            type="com.example.habbito.viewmodel.AddCategoryViewModel"
-            />
-    </data>
 <androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.AddCategoryFragment">
+
 
     <EditText
         android:id="@+id/etAddCategoryName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@{addCategory.categoryName}"
+        android:hint="Category name"
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -40,7 +35,7 @@
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="LANDSCAPEEE"
+        android:text="LANDSCAPE"
         android:textAlignment="center"
         android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,7 +57,7 @@
     <ListView
         android:id="@+id/lvCategoryProperty"
         android:layout_width="match_parent"
-        android:layout_height="393dp"
+        android:layout_height="160dp"
         android:layout_marginTop="32dp"
         android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
@@ -99,5 +94,5 @@
             android:textAlignment="center" />
     </LinearLayout>
 
+
 </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>

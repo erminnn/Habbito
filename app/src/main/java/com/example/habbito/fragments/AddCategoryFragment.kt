@@ -6,10 +6,9 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
+
 
 import com.example.habbito.R
 import com.example.habbito.adapters.CategoryAdapter
@@ -20,11 +19,8 @@ import com.example.habbito.models.CategoryProperty
 import com.example.habbito.repository.CategoryRepository
 import com.example.habbito.viewmodel.AddCategoryViewModel
 import com.example.habbito.viewmodelfactory.AddCategoryViewModelFactory
-import com.example.habbito.viewmodelfactory.CategoryViewModelFactory
-import com.example.habbito.databinding.FragmentAddCategoryBinding
 import kotlinx.android.synthetic.main.fragment_add_category.*
-import kotlinx.android.synthetic.main.fragment_category.*
-import kotlin.math.log
+
 
 /**
  * A simple [Fragment] subclass.
@@ -32,21 +28,14 @@ import kotlin.math.log
 class AddCategoryFragment : Fragment() {
     lateinit var properties : MutableList<String>
     lateinit var selectedType : String
-    lateinit var binding : FragmentAddCategoryBinding
     private lateinit var vm: AddCategoryViewModel
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        binding = FragmentAddCategoryBinding.inflate(inflater,container, false)
-        Log.d("TAGGGGGGGgg","fragment 1 napravljen")
-        return binding.root
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_add_category,container,false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         val dao = AppDatabase.getInstance(requireContext())!!.categoryDao
         val repository = CategoryRepository(dao)
         val factory = AddCategoryViewModelFactory(repository)
@@ -68,7 +57,6 @@ class AddCategoryFragment : Fragment() {
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 selectedType = types.get(position)
-                Log.d("Proba",selectedType)
             }
         }
 
@@ -76,12 +64,13 @@ class AddCategoryFragment : Fragment() {
         lvCategoryProperty.adapter = adapter
         btnAddCategoryProperty.setOnClickListener {
             val property = etAddCategoryProperty.text.toString()
+            if(property != ""){
             properties.add(property)
-            Log.d("Proba",properties.toString())
             adapter.notifyDataSetChanged()
-
-            //clear input
             etAddCategoryProperty.setText("")
+            }else{
+                Toast.makeText(requireContext(),"Property name is empty",Toast.LENGTH_SHORT).show()
+            }
         }
 
 
@@ -98,17 +87,20 @@ class AddCategoryFragment : Fragment() {
         return (when(item.itemId) {
             R.id.btnSaveCategory -> {
                 val categoryName = etAddCategoryName.text.toString()
-                val propertyList = mutableListOf<CategoryAdditionalProperty>()
-                properties.map { el ->
-                    propertyList.add(CategoryAdditionalProperty(el,null))
-                }
-               // vm.insertCategoryWithProperty(Category(categoryName,selectedType),propertyList)
-                Log.d("TAGGGGGGGgg",supportFragmentManager.fragments.size.toString())
-                val fragmentManager = activity!!.supportFragmentManager
-                val categoryFragment = CategoryFragment()
-                fragmentManager.beginTransaction().apply {
-                    replace(R.id.fragmentHolder,categoryFragment)
-                    commit()
+                if(categoryName != "") {
+                    val propertyList = mutableListOf<CategoryAdditionalProperty>()
+                    val fragmentManager = activity!!.supportFragmentManager
+                    val categoryFragment = CategoryFragment()
+                        properties.map { el ->
+                            propertyList.add(CategoryAdditionalProperty(el, null))
+                        }
+                    vm.insertCategoryWithProperty(Category(categoryName,selectedType),propertyList)
+                    fragmentManager.beginTransaction().apply {
+                        replace(R.id.fragmentHolder,categoryFragment)
+                        commit()
+                    }
+                }else{
+                    Toast.makeText(requireContext(),"Category name is empty",Toast.LENGTH_SHORT).show()
                 }
                 true
             }

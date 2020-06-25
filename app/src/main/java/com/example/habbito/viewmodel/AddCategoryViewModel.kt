@@ -17,8 +17,6 @@ class AddCategoryViewModel(private val repository: CategoryRepository) : ViewMod
     val types = listOf("Time","Numerical","Quantitative")
 
 
-    val categoryName =  MutableLiveData<String>()
-
 
     val allCategories: LiveData<List<Category>>
     val getAllCategoriesWithProperties : LiveData<List<CategoryProperty>>

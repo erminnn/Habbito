@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-    <data>
-        <variable
-            name="category"
-            type="com.example.habbito.models.Category" />
-    </data>
-
 <androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/categoryItem"
     android:layout_width="match_parent"
     android:layout_height="300dp">
@@ -18,7 +11,6 @@
         android:id="@+id/tvCategoryName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@={category.name}"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -30,7 +22,6 @@
         android:id="@+id/tvCategoryType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@={category.type}"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -38,4 +29,3 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.19" />
 </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>

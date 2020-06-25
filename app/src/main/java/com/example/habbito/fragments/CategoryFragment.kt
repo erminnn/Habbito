@@ -1,7 +1,6 @@
 package com.example.habbito.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,25 +11,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.habbito.R
 import com.example.habbito.adapters.CategoryAdapter
-import com.example.habbito.adapters.CategoryRvItemClick
 import com.example.habbito.database.AppDatabase
 import com.example.habbito.models.Category
-import com.example.habbito.models.CategoryAdditionalProperty
 import com.example.habbito.repository.CategoryRepository
 import com.example.habbito.viewmodel.CategoryViewModel
 import com.example.habbito.viewmodelfactory.CategoryViewModelFactory
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_category.*
+import com.example.habbito.adapters.CategoryAdapter.OnItemClickListener
 
 /**
  * A simple [Fragment] subclass.
  */
-class CategoryFragment : Fragment(),CategoryRvItemClick {
+class CategoryFragment : Fragment(), OnItemClickListener {
     private lateinit var vm: CategoryViewModel
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_category, container, false)
     }
