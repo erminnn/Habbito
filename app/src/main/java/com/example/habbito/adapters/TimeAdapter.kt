@@ -1,5 +1,6 @@
 package com.example.habbito.adapters
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.habbito.R
 import com.example.habbito.models.TimeActivity
 import kotlinx.android.synthetic.main.time_activity_item.view.*
+import java.util.*
+
 
 class TimeAdapter(private val timeActivityList: List<TimeActivity>,private val listner : OnTimeItemClickListener) : RecyclerView.Adapter<TimeAdapter.TimeActivityViewHolder>() {
 
@@ -38,4 +41,5 @@ class TimeAdapter(private val timeActivityList: List<TimeActivity>,private val l
     interface OnTimeItemClickListener {
         fun onItemClick(timeActivity: TimeActivity)
     }
+
 }

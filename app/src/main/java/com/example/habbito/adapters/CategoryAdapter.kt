@@ -1,14 +1,18 @@
 package com.example.habbito.adapters
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.habbito.R
 import com.example.habbito.models.Category
 import kotlinx.android.synthetic.main.category_item.view.*
+import java.util.*
 
 
 class CategoryAdapter(private val categoryList: List<Category>,private val listner : OnItemClickListener) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
@@ -16,6 +20,7 @@ class CategoryAdapter(private val categoryList: List<Category>,private val listn
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvCategoryName : TextView = itemView.tvCategoryName
         val tvCategoryType : TextView = itemView.tvCategoryType
+        val imgCategoryItem : ImageView = itemView.imgCategoryItem
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
@@ -31,6 +36,9 @@ class CategoryAdapter(private val categoryList: List<Category>,private val listn
         val currentItem = categoryList[position]
         holder.tvCategoryName.text = currentItem.name
         holder.tvCategoryType.text = currentItem.type
+        if(currentItem.type == "Time"){
+            holder.imgCategoryItem.setImageResource(R.drawable.ic_timer)
+        }
         holder.itemView.setOnClickListener {
             listner.onItemClick(currentItem)
         }
