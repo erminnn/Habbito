@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import com.example.habbito.dao.CategoryDao
 import com.example.habbito.models.Category
 import com.example.habbito.models.CategoryAdditionalProperty
-import com.example.habbito.models.CategoryProperty
 
 class CategoryRepository(private val categoryDao: CategoryDao) {
     val allCategories: LiveData<List<Category>> = categoryDao.getAllCategories()
@@ -13,6 +12,11 @@ class CategoryRepository(private val categoryDao: CategoryDao) {
      fun getAllPropertiesForCategory(id : Long) : LiveData<List<CategoryAdditionalProperty>>{
       return  categoryDao.getAllPropertiesForCategory(id)
     }
+
+     suspend fun getCategoryById(id : Long): Category{
+         return categoryDao.getCategoryById(id)
+     }
+
 
 
     suspend fun insertCategory(category: Category){
@@ -25,6 +29,9 @@ class CategoryRepository(private val categoryDao: CategoryDao) {
 
     suspend fun insertCategoryWithProperty(category: Category, categoryAdditionalProperty: List<CategoryAdditionalProperty>){
         categoryDao.insertCategoryWithProperty(category,categoryAdditionalProperty);
+    }
+    suspend fun deleteCategoryWithProperties(id : Long){
+        categoryDao.deleteCategoryWithProperties(id)
     }
 
 }

@@ -1,7 +1,6 @@
 package com.example.habbito.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.AdapterView
@@ -11,11 +10,9 @@ import androidx.lifecycle.ViewModelProvider
 
 
 import com.example.habbito.R
-import com.example.habbito.adapters.CategoryAdapter
 import com.example.habbito.database.AppDatabase
 import com.example.habbito.models.Category
 import com.example.habbito.models.CategoryAdditionalProperty
-import com.example.habbito.models.CategoryProperty
 import com.example.habbito.repository.CategoryRepository
 import com.example.habbito.viewmodel.AddCategoryViewModel
 import com.example.habbito.viewmodelfactory.AddCategoryViewModelFactory

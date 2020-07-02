@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
@@ -21,6 +22,8 @@ class CategoryAdapter(private val categoryList: List<Category>,private val listn
         val tvCategoryName : TextView = itemView.tvCategoryName
         val tvCategoryType : TextView = itemView.tvCategoryType
         val imgCategoryItem : ImageView = itemView.imgCategoryItem
+        val btnCategoryItemDelete : ImageButton = itemView.btnCategoryItemDelete
+        val btnCategoryItemEdit : ImageButton = itemView.btnCategoryItemEdit
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
@@ -43,9 +46,18 @@ class CategoryAdapter(private val categoryList: List<Category>,private val listn
             listner.onItemClick(currentItem)
         }
 
+        holder.btnCategoryItemDelete.setOnClickListener {
+            listner.onItemClickDelete(currentItem)
+        }
+        holder.btnCategoryItemEdit.setOnClickListener {
+            listner.onItemClickEdit(currentItem)
+        }
+
     }
 
     interface OnItemClickListener {
         fun onItemClick(category: Category)
+        fun onItemClickEdit(category: Category)
+        fun onItemClickDelete(category: Category)
     }
 }

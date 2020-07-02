@@ -80,4 +80,21 @@ class CategoryFragment : Fragment(), OnItemClickListener {
                 }
             })
     }
+
+    override fun onItemClickEdit(category: Category) {
+        val fragmentManager = activity!!.supportFragmentManager
+        val editCategoryFragment = EditCategoryFragment()
+        val bundle : Bundle = Bundle()
+        bundle.putLong("id",category.id)
+        editCategoryFragment.arguments = bundle
+        fragmentManager.beginTransaction().apply {
+            replace(R.id.fragmentHolder,editCategoryFragment)
+            addToBackStack(null)
+            commit()
+        }
+    }
+
+    override fun onItemClickDelete(category: Category) {
+        vm.deleteCategoryWithProperties(category.id)
+    }
 }

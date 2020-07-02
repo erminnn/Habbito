@@ -1,19 +1,19 @@
 package com.example.habbito.dao
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.habbito.models.Category
 import com.example.habbito.models.CategoryAdditionalProperty
-import com.example.habbito.models.CategoryProperty
 import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 @Dao
 abstract class CategoryDao {
+
+    @Query("SELECT * FROM category where category_id = :id")
+    abstract suspend fun getCategoryById(id : Long): Category
 
     @Query("SELECT * FROM category")
     abstract fun getAllCategories(): LiveData<List<Category>>
@@ -36,6 +36,17 @@ abstract class CategoryDao {
             cap.categoryId = categoryId
         }
         insertCategoryProperty(categoryAdditionalPropertyWithId)
+    }
+
+    @Query("DELETE from category where category_id = :id")
+    abstract suspend fun deleteCategory(id : Long)
+
+    @Query("DELETE from category_property where category_idFK = :id")
+    abstract suspend fun deleteCategoryProperties(id : Long)
+
+    suspend fun deleteCategoryWithProperties(id : Long){
+        deleteCategory(id)
+        deleteCategoryProperties(id)
     }
 
 }

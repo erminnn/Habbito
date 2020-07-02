@@ -1,13 +1,10 @@
 package com.example.habbito.viewmodel
 
-import androidx.databinding.Bindable
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.habbito.models.Category
 import com.example.habbito.models.CategoryAdditionalProperty
-import com.example.habbito.models.CategoryProperty
 import com.example.habbito.repository.CategoryRepository
 import kotlinx.coroutines.launch
 
