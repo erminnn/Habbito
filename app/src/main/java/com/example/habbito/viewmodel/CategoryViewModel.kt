@@ -13,11 +13,14 @@ class CategoryViewModel(private val repository: CategoryRepository) : ViewModel(
 
 
     val allCategories: LiveData<List<Category>>
-    val getAllCategoriesWithProperties : LiveData<List<CategoryProperty>>
+
+
+    fun getAllPropertiesForCategory(id : Long) : LiveData<List<CategoryAdditionalProperty>>{
+        return  repository.getAllPropertiesForCategory(id)
+    }
 
     init {
         allCategories = repository.allCategories
-        getAllCategoriesWithProperties= repository.getAllCategoriesWithProperties
     }
     fun insertCategory(category: Category) = viewModelScope.launch {
         repository.insertCategory(category)

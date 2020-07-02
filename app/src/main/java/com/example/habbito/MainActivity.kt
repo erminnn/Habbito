@@ -11,12 +11,14 @@ class MainActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         if(savedInstanceState == null) {
+            //when app runs first time we put CategoryFragment in FragmentHolder(id of the frame layout in activity_main)
             val categoryFragment = CategoryFragment()
             supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fragmentHolder, categoryFragment)
                 commit()
             }
         }else{
+            //if app is destroyed and started again it puts the last acitve fragment in FragmentHolder
             val currentFragment = getTopFragment()
             supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fragmentHolder, currentFragment)
@@ -25,6 +27,7 @@ class MainActivity : AppCompatActivity(){
         }
     }
 
+    //Get last active fragment
     fun getTopFragment(): Fragment {
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentHolder)
         return currentFragment as Fragment

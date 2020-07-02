@@ -1,6 +1,7 @@
 package com.example.habbito.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,7 @@ import com.example.habbito.viewmodel.CategoryViewModel
 import com.example.habbito.viewmodelfactory.CategoryViewModelFactory
 import kotlinx.android.synthetic.main.fragment_category.*
 import com.example.habbito.adapters.CategoryAdapter.OnItemClickListener
+import java.util.ArrayList
 
 /**
  * A simple [Fragment] subclass.
@@ -52,12 +54,30 @@ class CategoryFragment : Fragment(), OnItemClickListener {
         }
     }
 
+    //kada se klikne item u category fragment
     override fun onItemClick(category: Category) {
-        val fragmentManager = activity!!.supportFragmentManager
-        val timer = Timer()
-        fragmentManager.beginTransaction().apply {
-            replace(R.id.fragmentHolder,timer)
-            commit()
-        }
+
+            vm.getAllPropertiesForCategory(category.id).observe(this, Observer {
+                val properties = ArrayList<String>()
+                val fragmentManager = activity!!.supportFragmentManager
+                val timeActivityFragment = TimeActivityFragment()
+                val bundle : Bundle = Bundle()
+                if(it.size != 0) {
+                    it.map { e ->
+                        properties.add(e.name)
+                    }
+                    bundle.putStringArrayList("properties",properties)
+                    timeActivityFragment.arguments = bundle
+
+                }else{
+                    bundle.putStringArrayList("properties",properties)
+                    timeActivityFragment.arguments = bundle
+                }
+                fragmentManager.beginTransaction().apply {
+                    replace(R.id.fragmentHolder,timeActivityFragment)
+                    addToBackStack(null)
+                    commit()
+                }
+            })
     }
 }

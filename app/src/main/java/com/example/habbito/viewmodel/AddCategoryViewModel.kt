@@ -19,11 +19,10 @@ class AddCategoryViewModel(private val repository: CategoryRepository) : ViewMod
 
 
     val allCategories: LiveData<List<Category>>
-    val getAllCategoriesWithProperties : LiveData<List<CategoryProperty>>
 
     init {
         allCategories = repository.allCategories
-        getAllCategoriesWithProperties= repository.getAllCategoriesWithProperties
+
     }
     fun insertCategory(category: Category) = viewModelScope.launch {
         repository.insertCategory(category)

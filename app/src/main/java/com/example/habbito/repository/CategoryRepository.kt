@@ -9,7 +9,10 @@ import com.example.habbito.models.CategoryProperty
 class CategoryRepository(private val categoryDao: CategoryDao) {
     val allCategories: LiveData<List<Category>> = categoryDao.getAllCategories()
 
-    val getAllCategoriesWithProperties : LiveData<List<CategoryProperty>> = categoryDao.getAllCategoriesWithProperties()
+
+     fun getAllPropertiesForCategory(id : Long) : LiveData<List<CategoryAdditionalProperty>>{
+      return  categoryDao.getAllPropertiesForCategory(id)
+    }
 
 
     suspend fun insertCategory(category: Category){
