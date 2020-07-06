@@ -65,9 +65,6 @@ class EditCategoryFragment : Fragment() {
             val types =  listOf("Time","Numerical","Quantitative")
             val selectedTypeId = types.indexOf(selectedType)
 
-
-
-
             spinnerEditCategoryType.adapter  = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item,types)
             spinnerEditCategoryType.setSelection(selectedTypeId)
 
@@ -98,9 +95,9 @@ class EditCategoryFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.edit_category_menu, menu);
-
         super.onCreateOptionsMenu(menu, inflater)
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return (when(item.itemId) {
             R.id.btnSaveEditedCategory -> {

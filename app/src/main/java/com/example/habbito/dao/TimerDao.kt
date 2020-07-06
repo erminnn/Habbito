@@ -38,7 +38,7 @@ abstract class TimerDao {
     abstract fun getAllTimeActivities(): LiveData<List<TimeActivity>>
 
     @Query("SELECT t.timer_id from timer t where t.time_activity_id = :id")
-    abstract suspend fun getTimerIdFromTimeActivity(id : Long) : Long
+    abstract  fun getTimerIdFromTimeActivity(id : Long) : Long
 
 
 }
