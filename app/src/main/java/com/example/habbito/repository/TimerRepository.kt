@@ -38,4 +38,8 @@ class TimerRepository(private val timerDao: TimerDao) {
         return timerDao.getCategory(categoryId)
     }
 
+    suspend fun updateActivityValue(newValue: Long) {
+        return timerDao.updateActivityValue(newValue)
+    }
+
 }

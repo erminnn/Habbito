@@ -22,9 +22,7 @@ import kotlinx.android.synthetic.main.fragment_time_activity.*
 import kotlinx.coroutines.*
 import java.util.*
 
-/**
- * A simple [Fragment] subclass.
- */
+
 class ActivityListFragment : Fragment(), OnTimeItemClickListener {
     var properties: ArrayList<String>? = null
     private lateinit var vm: ActivityListViewModel
@@ -79,10 +77,8 @@ class ActivityListFragment : Fragment(), OnTimeItemClickListener {
             val fragmentManager = requireActivity().supportFragmentManager
             val category = vm.getCategory()
             val fragment: Fragment?
-            if (category.type == "Time")
-                fragment = TimerFragment.newInstance(vm.getTimerByTimeActivity(categoryActivity.id).id)
-            else
-                fragment= IncrementFragment.newInstance(categoryActivity.currentValue)
+            fragment =  if (category.type == "Time") TimerFragment.newInstance(vm.getTimerByTimeActivity(categoryActivity.id).id)
+                        else IncrementFragment.newInstance(categoryActivity.currentValue)
             launchFragment(fragmentManager, fragment)
         }
     }

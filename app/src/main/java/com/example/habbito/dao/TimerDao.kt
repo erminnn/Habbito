@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.example.habbito.models.Category
 import com.example.habbito.models.CategoryActivity
 import com.example.habbito.models.Timer
@@ -45,5 +46,8 @@ interface TimerDao {
 
     @Query("select * from category a where a.category_id = :categoryId")
     suspend fun getCategory(categoryId: Long): Category
+
+    @Query("update category_activity  set current_value = :newValue")
+    suspend fun updateActivityValue(newValue: Long)
 
 }

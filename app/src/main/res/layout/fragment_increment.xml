@@ -7,12 +7,14 @@
     tools:context=".fragments.IncrementFragment">
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         style="@style/FormScore"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499">
+        app:layout_constraintVertical_bias="0.212">
 
         <ImageButton
             android:id="@+id/bt_decrease"
@@ -20,7 +22,7 @@
             android:src="@drawable/ic_minus_gray" />
 
         <TextView
-            android:id="@+id/tv_score"
+            android:id="@+id/tv_value"
             style="@style/ScoreTextView"
             tools:text="0" />
 
@@ -29,5 +31,18 @@
             style="@style/DecScoreButton"
             android:src="@drawable/ic_plus_gray" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/saveBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:onClick="onSaveBtnClick"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.285" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

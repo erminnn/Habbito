@@ -28,6 +28,18 @@ class ActivityListViewModel(private val repository: TimerRepository) : ViewModel
 //        initializeActivities()
     }
 
+    fun onUpdateActivityClick(newValue: Long) {
+        uiScope.launch {
+            updateActivityValue(newValue)
+        }
+    }
+
+    suspend fun updateActivityValue(newValue: Long) {
+        withContext(IO){
+            repository.updateActivityValue(newValue)
+        }
+    }
+
     fun getTimerById(id: Long): MutableLiveData<Timer> {
         val timer = MutableLiveData<Timer>()
         viewModelScope.launch {
