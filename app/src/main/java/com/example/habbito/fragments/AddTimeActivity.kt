@@ -87,10 +87,10 @@ class AddTimeActivity : Fragment() {
                 )
                 val bundle = Bundle()
                 bundle.putLong("categoryId", vm.categoryId)
-                val fragmentManager = requireActivity().supportFragmentManager
+
                 val activityListFragment = ActivityListFragment()
                 activityListFragment.arguments = bundle
-                fragmentManager.beginTransaction().apply {
+                requireActivity().supportFragmentManager.beginTransaction().apply {
                     replace(R.id.fragmentHolder, activityListFragment)
                     addToBackStack(null)
                     commit()

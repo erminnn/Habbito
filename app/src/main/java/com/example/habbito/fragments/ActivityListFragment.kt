@@ -62,32 +62,29 @@ class ActivityListFragment : Fragment(), OnTimeItemClickListener {
         super.onActivityCreated(savedInstanceState)
 
         btnAddNewTimeActivity.setOnClickListener {
-            val fragmentManager = requireActivity().supportFragmentManager
             val addTimeActivity = AddTimeActivity()
             val bundle = Bundle()
             bundle.putStringArrayList("properties", properties)
             bundle.putLong("categoryId", vm.categoryId)
             addTimeActivity.arguments = bundle
-            launchFragment(fragmentManager, addTimeActivity)
+            launchFragment(addTimeActivity)
         }
     }
 
     override fun onItemClick(categoryActivity: CategoryActivity) {
         uiScope.launch {
-            val fragmentManager = requireActivity().supportFragmentManager
             val category = vm.getCategory()
             val fragment: Fragment?
             fragment =  if (category.type == "Time") TimerFragment.newInstance(vm.getTimerByTimeActivity(categoryActivity.id).id)
                         else IncrementFragment.newInstance(categoryActivity.currentValue)
-            launchFragment(fragmentManager, fragment)
+            launchFragment(fragment)
         }
     }
 
     private fun launchFragment(
-        fragmentManager: FragmentManager,
         fragment: Fragment
     ) {
-        fragmentManager.beginTransaction().apply {
+        requireActivity().supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentHolder, fragment)
             addToBackStack(null)
             commit()

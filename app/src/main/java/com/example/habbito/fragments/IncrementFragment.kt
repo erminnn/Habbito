@@ -62,8 +62,7 @@ class IncrementFragment : Fragment() {
     private fun onSaveBtnClick(view: View) {
         val newVal = value.text.toString().toLong()
         vm.onUpdateActivityClick(newVal)
-        val fragmentManager = requireActivity().supportFragmentManager
-        fragmentManager.popBackStack()
+        requireActivity().supportFragmentManager.popBackStack()
     }
 
     private fun onIncrementClick(view: View) {

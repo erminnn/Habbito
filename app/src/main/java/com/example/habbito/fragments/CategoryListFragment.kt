@@ -36,7 +36,6 @@ class CategoryListFragment : Fragment(), OnItemClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_category, container, false)
     }
 
@@ -47,7 +46,7 @@ class CategoryListFragment : Fragment(), OnItemClickListener {
         val repository = CategoryRepository(dao)
         val factory = CategoryViewModelFactory(repository)
         vm = ViewModelProvider(this, factory).get(CategoryListViewModel::class.java)
-        vm.allCategories.observe(this, Observer { items ->
+        vm.allCategories.observe(viewLifecycleOwner, Observer { items ->
             categoryRecyclerView.also {
                 it.layoutManager = LinearLayoutManager(requireContext())
                 it.adapter = CategoryAdapter(items, this)
@@ -55,10 +54,10 @@ class CategoryListFragment : Fragment(), OnItemClickListener {
         })
 
         btnAddNewCategory.setOnClickListener {
-            val fragmentManager = activity!!.supportFragmentManager
             val addCategoryFragment = AddCategoryFragment()
-            fragmentManager.beginTransaction().apply {
+            requireActivity().supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fragmentHolder, addCategoryFragment)
+                addToBackStack(null)
                 commit()
             }
         }
@@ -69,7 +68,6 @@ class CategoryListFragment : Fragment(), OnItemClickListener {
         uiScope.launch {
             val allPropertiesForCategory = vm.getAllPropertiesForCategory(category.id).value
             val properties = ArrayList<String>()
-            val fragmentManager = activity!!.supportFragmentManager
             val activityListFragment = ActivityListFragment()
             val bundle = Bundle()
             if (allPropertiesForCategory != null && allPropertiesForCategory.isNotEmpty()) {
@@ -82,7 +80,7 @@ class CategoryListFragment : Fragment(), OnItemClickListener {
                 bundle.putLong("categoryId", category.id)
                 activityListFragment.arguments = bundle
             }
-            fragmentManager.beginTransaction().apply {
+            requireActivity().supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fragmentHolder, activityListFragment)
                 addToBackStack(null)
                 commit()
@@ -91,12 +89,11 @@ class CategoryListFragment : Fragment(), OnItemClickListener {
     }
 
     override fun onItemClickEdit(category: Category) {
-        val fragmentManager = activity!!.supportFragmentManager
         val editCategoryFragment = EditCategoryFragment()
-        val bundle: Bundle = Bundle()
+        val bundle = Bundle()
         bundle.putLong("id", category.id)
         editCategoryFragment.arguments = bundle
-        fragmentManager.beginTransaction().apply {
+        requireActivity().supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentHolder, editCategoryFragment)
             addToBackStack(null)
             commit()
@@ -104,7 +101,7 @@ class CategoryListFragment : Fragment(), OnItemClickListener {
     }
 
     override fun onItemClickDelete(category: Category) {
-        vm.deleteCategoryWithProperties(category.id)
+        uiScope.launch { vm.deleteCategoryWithProperties(category.id) }
     }
 
 }

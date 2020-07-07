@@ -92,7 +92,7 @@ class AddCategoryFragment : Fragment() {
                             propertyList.add(CategoryAdditionalProperty(el, null))
                         }
                     vm.insertCategoryWithProperty(Category(categoryName,selectedType),propertyList)
-                    fragmentManager.beginTransaction().apply {
+                    requireActivity().supportFragmentManager.beginTransaction().apply {
                         replace(R.id.fragmentHolder,categoryFragment)
                         commit()
                     }
