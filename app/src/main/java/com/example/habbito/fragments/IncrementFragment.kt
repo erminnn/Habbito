@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 
 import com.example.habbito.R
@@ -61,6 +62,8 @@ class IncrementFragment : Fragment() {
     private fun onSaveBtnClick(view: View) {
         val newVal = value.text.toString().toLong()
         vm.onUpdateActivityClick(newVal)
+        val fragmentManager = requireActivity().supportFragmentManager
+        fragmentManager.popBackStack()
     }
 
     private fun onIncrementClick(view: View) {
