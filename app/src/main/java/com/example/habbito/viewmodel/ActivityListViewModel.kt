@@ -2,6 +2,7 @@ package com.example.habbito.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.example.habbito.models.Category
 import com.example.habbito.models.CategoryActivity
 import com.example.habbito.models.Timer
 import com.example.habbito.repository.TimerRepository
@@ -79,5 +80,12 @@ class ActivityListViewModel(private val repository: TimerRepository) : ViewModel
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
+    }
+
+    suspend fun getCategory(): Category {
+        return withContext(IO) {
+            repository.getCategory(categoryId)
+        }
+
     }
 }

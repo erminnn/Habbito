@@ -81,7 +81,8 @@ class AddTimeActivity : Fragment() {
                     CategoryActivity(
                         activityName,
                         selectedProperty,
-                        vm.categoryId
+                        vm.categoryId,
+                        0
                     )
                 )
                 val bundle = Bundle()

@@ -2,6 +2,7 @@ package com.example.habbito.repository
 
 import androidx.lifecycle.LiveData
 import com.example.habbito.dao.TimerDao
+import com.example.habbito.models.Category
 import com.example.habbito.models.CategoryActivity
 import com.example.habbito.models.Timer
 
@@ -31,6 +32,10 @@ class TimerRepository(private val timerDao: TimerDao) {
 
     suspend fun getTimerByTimeActivity(id: Long): Timer {
         return timerDao.getTimerByTimeActivity(id)
+    }
+
+    suspend fun getCategory(categoryId: Long): Category {
+        return timerDao.getCategory(categoryId)
     }
 
 }

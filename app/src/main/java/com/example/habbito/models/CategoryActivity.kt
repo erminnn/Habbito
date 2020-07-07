@@ -22,7 +22,9 @@ data class CategoryActivity(
     @ColumnInfo(name = "property")
     var property: String,
     @ColumnInfo(name = "category_id")
-    var categoryId: Long
+    var categoryId: Long,
+    @ColumnInfo(name = "current_value")
+    var currentValue: Long
 ) {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")

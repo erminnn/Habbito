@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import com.example.habbito.models.Category
 import com.example.habbito.models.CategoryActivity
 import com.example.habbito.models.Timer
 import kotlinx.coroutines.async
@@ -41,5 +42,8 @@ interface TimerDao {
 
     @Query("select * from category_activity a where a.category_id = :categoryId")
     suspend fun getActivitiesByCategoryId(categoryId: Long): List<CategoryActivity>?
+
+    @Query("select * from category a where a.category_id = :categoryId")
+    suspend fun getCategory(categoryId: Long): Category
 
 }

@@ -141,6 +141,16 @@ class TimerFragment : Fragment() {
 
 
 
+    companion object {
+        @JvmStatic
+        fun newInstance(param1: Long) =
+            TimerFragment().apply {
+                arguments = Bundle().apply {
+                    putLong("timer_id", param1)
+                }
+            }
+    }
+
 
 
 

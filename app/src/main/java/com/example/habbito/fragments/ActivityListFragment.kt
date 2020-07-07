@@ -2,6 +2,7 @@ package com.example.habbito.fragments
 
 import android.os.Bundle
 import android.util.Log
+import android.view.FrameMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,12 +46,14 @@ class ActivityListFragment : Fragment(), OnTimeItemClickListener {
             vm = ViewModelProvider(this, factory).get(ActivityListViewModel::class.java)
             vm.categoryId = bundle.getLong("categoryId")
             vm.initializeActivities()
-            vm.allCategoryActivities.observe(viewLifecycleOwner, androidx.lifecycle.Observer { items ->
-                timeActivityRecyclerView.also {
-                    it.layoutManager = LinearLayoutManager(requireContext())
-                    it.adapter = TimeAdapter(items, this)
-                }
-            })
+            vm.allCategoryActivities.observe(
+                viewLifecycleOwner,
+                androidx.lifecycle.Observer { items ->
+                    timeActivityRecyclerView.also {
+                        it.layoutManager = LinearLayoutManager(requireContext())
+                        it.adapter = TimeAdapter(items, this)
+                    }
+                })
         } catch (e: Exception) {
             Log.d("Error", e.toString())
         }
@@ -67,23 +70,24 @@ class ActivityListFragment : Fragment(), OnTimeItemClickListener {
             bundle.putStringArrayList("properties", properties)
             bundle.putLong("categoryId", vm.categoryId)
             addTimeActivity.arguments = bundle
-            fragmentBegin(fragmentManager, addTimeActivity)
+            launchFragment(fragmentManager, addTimeActivity)
         }
     }
 
     override fun onItemClick(categoryActivity: CategoryActivity) {
         uiScope.launch {
-            val timer1 = vm.getTimerByTimeActivity(categoryActivity.id)
             val fragmentManager = requireActivity().supportFragmentManager
-            val timer = TimerFragment()
-            val bundle = Bundle()
-            bundle.putLong("timer_id", timer1.id)
-            timer.arguments = bundle
-            fragmentBegin(fragmentManager, timer)
+            val category = vm.getCategory()
+            val fragment: Fragment?
+            if (category.type == "Time")
+                fragment = TimerFragment.newInstance(vm.getTimerByTimeActivity(categoryActivity.id).id)
+            else
+                fragment= IncrementFragment.newInstance(categoryActivity.currentValue)
+            launchFragment(fragmentManager, fragment)
         }
     }
 
-    private fun fragmentBegin(
+    private fun launchFragment(
         fragmentManager: FragmentManager,
         fragment: Fragment
     ) {
