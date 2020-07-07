@@ -1,8 +1,5 @@
 package com.example.habbito.fragments
 
-import android.app.backup.SharedPreferencesBackupHelper
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
@@ -15,26 +12,23 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.habbito.R
 import com.example.habbito.database.AppDatabase
-import com.example.habbito.models.Timer
-import com.example.habbito.repository.CategoryRepository
 import com.example.habbito.repository.TimerRepository
-import com.example.habbito.viewmodel.TimerViewModel
+import com.example.habbito.viewmodel.ActivityListViewModel
 import com.example.habbito.viewmodelfactory.TimerViewModelFactory
 import kotlinx.android.synthetic.main.fragment_timer.*
-import kotlin.math.log
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class Timer : Fragment() {
+class TimerFragment : Fragment() {
     private lateinit var chronometer: Chronometer
     enum class TimerState {Stopped,Running,Paused}
     var timerState = TimerState.Stopped
     private var pauseOffset : Long = 0
     private var base : Long = 0
     private var id : Long? = 0
-    private lateinit var vm: TimerViewModel
+    private lateinit var vm: ActivityListViewModel
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -52,12 +46,12 @@ class Timer : Fragment() {
         super.onActivityCreated(savedInstanceState)
         val dao = AppDatabase.getInstance(requireContext())!!.timerDao
         val repository = TimerRepository(dao)
-        val factory = TimerViewModelFactory(repository)
-        vm = ViewModelProvider(this, factory).get(TimerViewModel::class.java)
+        val factory = TimerViewModelFactory(repository, activity?.application!!)
+        vm = ViewModelProvider(this, factory).get(ActivityListViewModel::class.java)
 
 
         var currentTimerState: String
-        vm.getTimerById(id as Long).observe(this, Observer {
+        vm.getTimerById(id as Long).observe(viewLifecycleOwner, Observer {
             pauseOffset = it.pauseOffset as Long
             currentTimerState = it.timerState
             if (currentTimerState == "Stopped") {

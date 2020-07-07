@@ -9,19 +9,14 @@ import com.example.habbito.models.CategoryAdditionalProperty
 import com.example.habbito.repository.CategoryRepository
 import kotlinx.coroutines.launch
 
-class CategoryViewModel(private val repository: CategoryRepository) : ViewModel(){
+class CategoryListViewModel(private val repository: CategoryRepository) : ViewModel(){
 
-
-    val allCategories: LiveData<List<Category>>
-
+    val allCategories: LiveData<List<Category>> = repository.allCategories
 
     fun getAllPropertiesForCategory(id : Long) : LiveData<List<CategoryAdditionalProperty>>{
         return  repository.getAllPropertiesForCategory(id)
     }
 
-    init {
-        allCategories = repository.allCategories
-    }
     fun insertCategory(category: Category) = viewModelScope.launch {
         repository.insertCategory(category)
     }
@@ -42,4 +37,5 @@ class CategoryViewModel(private val repository: CategoryRepository) : ViewModel(
         }
         return category
     }
+
 }

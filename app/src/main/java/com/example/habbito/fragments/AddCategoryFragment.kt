@@ -87,7 +87,7 @@ class AddCategoryFragment : Fragment() {
                 if(categoryName != "") {
                     val propertyList = mutableListOf<CategoryAdditionalProperty>()
                     val fragmentManager = activity!!.supportFragmentManager
-                    val categoryFragment = CategoryFragment()
+                    val categoryFragment = CategoryListFragment()
                         properties.map { el ->
                             propertyList.add(CategoryAdditionalProperty(el, null))
                         }

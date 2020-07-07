@@ -14,7 +14,7 @@ import com.example.habbito.adapters.CategoryAdapter.OnItemClickListener
 import com.example.habbito.database.AppDatabase
 import com.example.habbito.models.Category
 import com.example.habbito.repository.CategoryRepository
-import com.example.habbito.viewmodel.CategoryViewModel
+import com.example.habbito.viewmodel.CategoryListViewModel
 import com.example.habbito.viewmodelfactory.CategoryViewModelFactory
 import kotlinx.android.synthetic.main.fragment_category.*
 import kotlinx.coroutines.CoroutineScope
@@ -26,8 +26,8 @@ import java.util.*
 /**
  * A simple [Fragment] subclass.
  */
-class CategoryFragment : Fragment(), OnItemClickListener {
-    private lateinit var vm: CategoryViewModel
+class CategoryListFragment : Fragment(), OnItemClickListener {
+    private lateinit var vm: CategoryListViewModel
     private val fragmentJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + fragmentJob)
 
@@ -46,7 +46,7 @@ class CategoryFragment : Fragment(), OnItemClickListener {
         val dao = AppDatabase.getInstance(requireContext())!!.categoryDao
         val repository = CategoryRepository(dao)
         val factory = CategoryViewModelFactory(repository)
-        vm = ViewModelProvider(this, factory).get(CategoryViewModel::class.java)
+        vm = ViewModelProvider(this, factory).get(CategoryListViewModel::class.java)
         vm.allCategories.observe(this, Observer { items ->
             categoryRecyclerView.also {
                 it.layoutManager = LinearLayoutManager(requireContext())
@@ -70,19 +70,20 @@ class CategoryFragment : Fragment(), OnItemClickListener {
             val allPropertiesForCategory = vm.getAllPropertiesForCategory(category.id).value
             val properties = ArrayList<String>()
             val fragmentManager = activity!!.supportFragmentManager
-            val timeActivityFragment = TimeActivityFragment()
-            val bundle: Bundle = Bundle()
-            if (allPropertiesForCategory?.size != 0) {
-                allPropertiesForCategory?.map { e -> properties.add(e.name) }
+            val activityListFragment = ActivityListFragment()
+            val bundle = Bundle()
+            if (allPropertiesForCategory != null && allPropertiesForCategory.isNotEmpty()) {
+                allPropertiesForCategory.map { e -> properties.add(e.name) }
                 bundle.putStringArrayList("properties", properties)
-                timeActivityFragment.arguments = bundle
+                activityListFragment.arguments = bundle
 
             } else {
                 bundle.putStringArrayList("properties", properties)
-                timeActivityFragment.arguments = bundle
+                bundle.putLong("categoryId", category.id)
+                activityListFragment.arguments = bundle
             }
             fragmentManager.beginTransaction().apply {
-                replace(R.id.fragmentHolder, timeActivityFragment)
+                replace(R.id.fragmentHolder, activityListFragment)
                 addToBackStack(null)
                 commit()
             }

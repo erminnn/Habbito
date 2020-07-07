@@ -7,16 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.habbito.R
 import com.example.habbito.adapters.TimeAdapter
 import com.example.habbito.adapters.TimeAdapter.OnTimeItemClickListener
 import com.example.habbito.database.AppDatabase
-import com.example.habbito.models.TimeActivity
+import com.example.habbito.models.CategoryActivity
 import com.example.habbito.repository.TimerRepository
-import com.example.habbito.viewmodel.TimerViewModel
+import com.example.habbito.viewmodel.ActivityListViewModel
 import com.example.habbito.viewmodelfactory.TimerViewModelFactory
 import kotlinx.android.synthetic.main.fragment_time_activity.*
 import kotlinx.coroutines.*
@@ -25,9 +24,9 @@ import java.util.*
 /**
  * A simple [Fragment] subclass.
  */
-class TimeActivityFragment : Fragment(), OnTimeItemClickListener {
+class ActivityListFragment : Fragment(), OnTimeItemClickListener {
     var properties: ArrayList<String>? = null
-    private lateinit var vm: TimerViewModel
+    private lateinit var vm: ActivityListViewModel
     private val fragmentJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + fragmentJob)
 
@@ -40,6 +39,18 @@ class TimeActivityFragment : Fragment(), OnTimeItemClickListener {
         try {
             val bundle: Bundle = this.requireArguments()
             properties = bundle.getStringArrayList("properties")
+            val dao = AppDatabase.getInstance(requireContext())!!.timerDao
+            val repository = TimerRepository(dao)
+            val factory = TimerViewModelFactory(repository, activity?.application!!)
+            vm = ViewModelProvider(this, factory).get(ActivityListViewModel::class.java)
+            vm.categoryId = bundle.getLong("categoryId")
+            vm.initializeActivities()
+            vm.allCategoryActivities.observe(viewLifecycleOwner, androidx.lifecycle.Observer { items ->
+                timeActivityRecyclerView.also {
+                    it.layoutManager = LinearLayoutManager(requireContext())
+                    it.adapter = TimeAdapter(items, this)
+                }
+            })
         } catch (e: Exception) {
             Log.d("Error", e.toString())
         }
@@ -48,34 +59,25 @@ class TimeActivityFragment : Fragment(), OnTimeItemClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val dao = AppDatabase.getInstance(requireContext())!!.timerDao
-        val repository = TimerRepository(dao)
-        val factory = TimerViewModelFactory(repository)
-        vm = ViewModelProvider(this, factory).get(TimerViewModel::class.java)
-        vm.allTimeActivities.observe(this, Observer { items ->
-            timeActivityRecyclerView.also {
-                it.layoutManager = LinearLayoutManager(requireContext())
-                it.adapter = TimeAdapter(items, this)
-            }
-        })
 
         btnAddNewTimeActivity.setOnClickListener {
-            val fragmentManager = activity!!.supportFragmentManager
+            val fragmentManager = requireActivity().supportFragmentManager
             val addTimeActivity = AddTimeActivity()
             val bundle = Bundle()
             bundle.putStringArrayList("properties", properties)
+            bundle.putLong("categoryId", vm.categoryId)
             addTimeActivity.arguments = bundle
             fragmentBegin(fragmentManager, addTimeActivity)
         }
     }
 
-    override fun onItemClick(timeActivity: TimeActivity) {
+    override fun onItemClick(categoryActivity: CategoryActivity) {
         uiScope.launch {
-            val id = vm.getTimerIdFromTimeActivityAsync(timeActivity.id)
-            val fragmentManager = activity!!.supportFragmentManager
-            val timer = Timer()
+            val timer1 = vm.getTimerByTimeActivity(categoryActivity.id)
+            val fragmentManager = requireActivity().supportFragmentManager
+            val timer = TimerFragment()
             val bundle = Bundle()
-            bundle.putLong("timer_id", id)
+            bundle.putLong("timer_id", timer1.id)
             timer.arguments = bundle
             fragmentBegin(fragmentManager, timer)
         }

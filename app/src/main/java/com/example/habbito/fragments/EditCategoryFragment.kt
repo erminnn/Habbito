@@ -15,9 +15,8 @@ import com.example.habbito.database.AppDatabase
 import com.example.habbito.models.Category
 import com.example.habbito.models.CategoryAdditionalProperty
 import com.example.habbito.repository.CategoryRepository
-import com.example.habbito.viewmodel.CategoryViewModel
+import com.example.habbito.viewmodel.CategoryListViewModel
 import com.example.habbito.viewmodelfactory.CategoryViewModelFactory
-import kotlinx.android.synthetic.main.fragment_add_category.*
 import kotlinx.android.synthetic.main.fragment_edit_category.*
 import java.lang.Exception
 
@@ -29,7 +28,7 @@ class EditCategoryFragment : Fragment() {
     val properties = mutableListOf<String>()
      var selectedType : String = ""
     lateinit var adapter : ArrayAdapter<String>
-    private lateinit var vm: CategoryViewModel
+    private lateinit var vm: CategoryListViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,7 +49,7 @@ class EditCategoryFragment : Fragment() {
         val dao = AppDatabase.getInstance(requireContext())!!.categoryDao
         val repository = CategoryRepository(dao)
         val factory = CategoryViewModelFactory(repository)
-        vm = ViewModelProvider(this,factory).get(CategoryViewModel::class.java)
+        vm = ViewModelProvider(this,factory).get(CategoryListViewModel::class.java)
         vm.getAllPropertiesForCategory(id).observe(this, Observer {
             it.map { el ->
                 properties.add(el.name)
@@ -106,7 +105,7 @@ class EditCategoryFragment : Fragment() {
                 if(categoryName != "") {
                     val propertyList = mutableListOf<CategoryAdditionalProperty>()
                     val fragmentManager = activity!!.supportFragmentManager
-                    val categoryFragment = CategoryFragment()
+                    val categoryFragment = CategoryListFragment()
                     properties.map { el ->
                         propertyList.add(CategoryAdditionalProperty(el, null))
                     }
