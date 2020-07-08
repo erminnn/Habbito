@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 
 
@@ -28,7 +29,9 @@ class AddCategoryFragment : Fragment() {
     private lateinit var vm: AddCategoryViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_add_category,container,false)
+        val view = inflater.inflate(R.layout.fragment_add_category, container, false)
+        setTitle()
+        return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -105,4 +108,9 @@ class AddCategoryFragment : Fragment() {
                 super.onOptionsItemSelected(item)
         })
     }
+
+    private fun setTitle() {
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.add_category)
+    }
+
 }

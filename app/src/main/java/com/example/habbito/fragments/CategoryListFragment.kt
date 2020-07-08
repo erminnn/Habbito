@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -36,7 +37,9 @@ class CategoryListFragment : Fragment(), OnItemClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_category, container, false)
+        val view = inflater.inflate(R.layout.fragment_category, container, false)
+        setTitle()
+        return view
     }
 
 
@@ -103,5 +106,10 @@ class CategoryListFragment : Fragment(), OnItemClickListener {
     override fun onItemClickDelete(category: Category) {
         uiScope.launch { vm.deleteCategoryWithProperties(category.id) }
     }
+
+    private fun setTitle() {
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.habito)
+    }
+
 
 }

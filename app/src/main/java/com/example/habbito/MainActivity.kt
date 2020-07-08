@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.example.habbito.fragments.CategoryListFragment
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity(){
         }
     }
 
-    fun getTopFragment(): Fragment {
+    private fun getTopFragment(): Fragment {
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentHolder)
         return currentFragment as Fragment
     }

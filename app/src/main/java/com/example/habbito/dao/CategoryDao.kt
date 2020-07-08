@@ -29,13 +29,12 @@ abstract class CategoryDao {
 
 
      fun insertCategoryWithProperty(category: Category, categoryAdditionalProperty: List<CategoryAdditionalProperty>) = runBlocking{
-        val asyncInsertCategory = async { insertCategory(category) }
-        val categoryId : Long = asyncInsertCategory.await()
-        val categoryAdditionalPropertyWithId = categoryAdditionalProperty
-        for(cap in categoryAdditionalPropertyWithId){
-            cap.categoryId = categoryId
-        }
-        insertCategoryProperty(categoryAdditionalPropertyWithId)
+         val asyncInsertCategory = async { insertCategory(category) }
+         val categoryId: Long = asyncInsertCategory.await()
+         for (cap in categoryAdditionalProperty) {
+             cap.categoryId = categoryId
+         }
+         insertCategoryProperty(categoryAdditionalProperty)
     }
 
     @Query("DELETE from category where category_id = :id")

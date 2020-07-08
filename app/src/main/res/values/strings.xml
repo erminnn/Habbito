@@ -7,4 +7,6 @@
     <string name="select_category_type">Select category type</string>
     <string name="category_name">Category name</string>
     <string name="add_property">Add property</string>
+    <string name="habito">Habito</string>
+    <string name="edit_category">Edit category</string>
 </resources>

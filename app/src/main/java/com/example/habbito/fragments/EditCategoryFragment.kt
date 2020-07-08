@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 
@@ -44,6 +45,7 @@ class EditCategoryFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_edit_category, container, false)
+        setTitle()
         try {
             val bundle: Bundle = this.requireArguments()
             id = bundle.getLong("id")
@@ -156,6 +158,10 @@ class EditCategoryFragment : Fragment() {
             else ->
                 super.onOptionsItemSelected(item)
         })
+    }
+
+    private fun setTitle() {
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.edit_category)
     }
 
 }
