@@ -39,9 +39,12 @@ class CategoryAdapter(private val categoryList: List<Category>,private val listn
         val currentItem = categoryList[position]
         holder.tvCategoryName.text = currentItem.name
         holder.tvCategoryType.text = currentItem.type
-        if(currentItem.type == "Time"){
-            holder.imgCategoryItem.setImageResource(R.drawable.ic_timer)
+        when (currentItem.type) {
+            "Time" -> holder.imgCategoryItem.setImageResource(R.drawable.ic_timer)
+            "Numerical" -> holder.imgCategoryItem.setImageResource(R.drawable.ic_increment)
+
         }
+
         holder.itemView.setOnClickListener {
             listner.onItemClick(currentItem)
         }
