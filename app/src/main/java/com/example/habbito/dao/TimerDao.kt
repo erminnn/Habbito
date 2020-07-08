@@ -8,6 +8,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.example.habbito.models.Category
 import com.example.habbito.models.CategoryActivity
+import com.example.habbito.models.CategoryAdditionalProperty
 import com.example.habbito.models.Timer
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -49,5 +50,8 @@ interface TimerDao {
 
     @Query("update category_activity  set current_value = :newValue")
     suspend fun updateActivityValue(newValue: Long)
+
+    @Query("SELECT * from category_property cp  where cp.category_idFK = :id")
+    fun getAllPropertiesForCategory(id : Long): LiveData<List<CategoryAdditionalProperty>>
 
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.example.habbito.dao.TimerDao
 import com.example.habbito.models.Category
 import com.example.habbito.models.CategoryActivity
+import com.example.habbito.models.CategoryAdditionalProperty
 import com.example.habbito.models.Timer
 
 class TimerRepository(private val timerDao: TimerDao) {
@@ -40,6 +41,10 @@ class TimerRepository(private val timerDao: TimerDao) {
 
     suspend fun updateActivityValue(newValue: Long) {
         return timerDao.updateActivityValue(newValue)
+    }
+
+    fun getAllPropertiesForCategory(id: Long): LiveData<List<CategoryAdditionalProperty>> {
+        return timerDao.getAllPropertiesForCategory(id)
     }
 
 }

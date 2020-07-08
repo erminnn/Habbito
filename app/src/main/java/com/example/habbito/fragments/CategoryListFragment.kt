@@ -69,20 +69,12 @@ class CategoryListFragment : Fragment(), OnItemClickListener {
     //kada se klikne item u category fragment
     override fun onItemClick(category: Category) {
         uiScope.launch {
-            val allPropertiesForCategory = vm.getAllPropertiesForCategory(category.id).value
             val properties = ArrayList<String>()
             val activityListFragment = ActivityListFragment()
             val bundle = Bundle()
-            if (allPropertiesForCategory != null && allPropertiesForCategory.isNotEmpty()) {
-                allPropertiesForCategory.map { e -> properties.add(e.name) }
-                bundle.putStringArrayList("properties", properties)
-                activityListFragment.arguments = bundle
-
-            } else {
-                bundle.putStringArrayList("properties", properties)
-                bundle.putLong("categoryId", category.id)
-                activityListFragment.arguments = bundle
-            }
+            bundle.putStringArrayList("properties", properties)
+            bundle.putLong("categoryId", category.id)
+            activityListFragment.arguments = bundle
             requireActivity().supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fragmentHolder, activityListFragment)
                 addToBackStack(null)

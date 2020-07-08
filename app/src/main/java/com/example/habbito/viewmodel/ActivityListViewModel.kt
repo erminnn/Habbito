@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.example.habbito.models.Category
 import com.example.habbito.models.CategoryActivity
+import com.example.habbito.models.CategoryAdditionalProperty
 import com.example.habbito.models.Timer
 import com.example.habbito.repository.TimerRepository
 import kotlinx.coroutines.*
@@ -99,5 +100,9 @@ class ActivityListViewModel(private val repository: TimerRepository) : ViewModel
             repository.getCategory(categoryId)
         }
 
+    }
+
+    fun initializeCategoryProperties(categoryId: Long): LiveData<List<CategoryAdditionalProperty>> {
+        return repository.getAllPropertiesForCategory(categoryId)
     }
 }

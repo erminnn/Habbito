@@ -37,13 +37,17 @@ class ActivityListFragment : Fragment(), OnTimeItemClickListener {
         val view: View = inflater.inflate(R.layout.fragment_time_activity, container, false)
         try {
             val bundle: Bundle = this.requireArguments()
-            properties = bundle.getStringArrayList("properties")
             val dao = AppDatabase.getInstance(requireContext())!!.timerDao
             val repository = TimerRepository(dao)
             val factory = TimerViewModelFactory(repository, activity?.application!!)
             vm = ViewModelProvider(this, factory).get(ActivityListViewModel::class.java)
             vm.categoryId = bundle.getLong("categoryId")
             vm.initializeActivities()
+            vm.initializeCategoryProperties(vm.categoryId).observe(
+                viewLifecycleOwner, androidx.lifecycle.Observer {
+                    t -> properties = ArrayList(t.map { categoryAdditionalProperty -> categoryAdditionalProperty.name })
+                }
+            )
             vm.allCategoryActivities.observe(
                 viewLifecycleOwner,
                 androidx.lifecycle.Observer { items ->
