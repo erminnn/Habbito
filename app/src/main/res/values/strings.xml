@@ -9,4 +9,6 @@
     <string name="add_property">Add property</string>
     <string name="habito">Habito</string>
     <string name="edit_category">Edit category</string>
+    <string name="add_activity">Add activity</string>
+    <string name="name">Name</string>
 </resources>

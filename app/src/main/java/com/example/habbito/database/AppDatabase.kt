@@ -16,21 +16,12 @@ import com.example.habbito.models.Timer
 
 @Database(
     entities = [Category::class, CategoryAdditionalProperty::class, Timer::class, CategoryActivity::class],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract val categoryDao: CategoryDao
     abstract val timerDao: TimerDao
-
-    /*val MIGRATION_1_2: Migration = object : Migration(1, 2) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            database.execSQL(
-                "ALTER TABLE users "
-                        + "ADD COLUMN address TEXT"
-            )
-        }
-    }*/
 
     companion object {
         @Volatile

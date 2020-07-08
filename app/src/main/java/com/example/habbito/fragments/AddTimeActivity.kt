@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.habbito.R
@@ -30,8 +31,8 @@ class AddTimeActivity : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_add_time_activity, container, false)
+        setTitle()
         return view
     }
 
@@ -85,19 +86,14 @@ class AddTimeActivity : Fragment() {
                         0
                     )
                 )
-                val bundle = Bundle()
-                bundle.putLong("categoryId", vm.categoryId)
-
-                val activityListFragment = ActivityListFragment()
-                activityListFragment.arguments = bundle
-                requireActivity().supportFragmentManager.beginTransaction().apply {
-                    replace(R.id.fragmentHolder, activityListFragment)
-                    addToBackStack(null)
-                    commit()
-                }
+                requireActivity().supportFragmentManager.popBackStack()
             }
 
         }
     }
+    private fun setTitle() {
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.add_activity)
+    }
+
 
 }
