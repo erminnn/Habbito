@@ -89,7 +89,7 @@ class CategoryListFragment : Fragment(), OnItemClickListener {
     }
 
     override fun onItemClickDelete(category: Category) {
-        uiScope.launch { vm.deleteCategoryWithProperties(category.id) }
+        uiScope.launch { vm.deleteCategory(category.id) }
     }
 
     private fun observeAllCategories() {

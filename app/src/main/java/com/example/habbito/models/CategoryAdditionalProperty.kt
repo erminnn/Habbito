@@ -2,7 +2,7 @@ package com.example.habbito.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.Ignore
+import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "category_property",
@@ -10,7 +10,8 @@ import androidx.room.PrimaryKey
         androidx.room.ForeignKey(
             entity = com.example.habbito.models.Category::class,
             parentColumns = ["category_id"],
-            childColumns = ["category_idFK"]
+            childColumns = ["category_idFK"],
+            onDelete = CASCADE
         )]
 )
 data class CategoryAdditionalProperty(

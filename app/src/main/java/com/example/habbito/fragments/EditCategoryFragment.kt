@@ -87,7 +87,7 @@ class EditCategoryFragment : Fragment() {
         return (when (item.itemId) {
             R.id.btnSaveEditedCategory -> {
                 uiScope.launch {
-                    vm.deleteCategoryWithProperties(id)
+                    vm.deleteCategory(id)
                     val categoryName = etEditCategoryName.text.toString()
                     if (categoryName != "") {
                         val propertyList = mutableListOf<CategoryAdditionalProperty>()

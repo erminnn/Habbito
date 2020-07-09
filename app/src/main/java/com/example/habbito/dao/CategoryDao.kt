@@ -43,9 +43,4 @@ interface  CategoryDao {
     @Query("DELETE from category_property where category_idFK = :id")
     suspend fun deleteCategoryProperties(id : Long)
 
-    suspend fun deleteCategoryWithProperties(id : Long){
-        deleteCategory(id)
-        deleteCategoryProperties(id)
-    }
-
 }

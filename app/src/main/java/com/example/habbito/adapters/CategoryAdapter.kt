@@ -1,33 +1,32 @@
 package com.example.habbito.adapters
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.cardview.widget.CardView
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.habbito.R
 import com.example.habbito.models.Category
 import kotlinx.android.synthetic.main.category_item.view.*
-import java.util.*
 
 
-class CategoryAdapter(private val categoryList: List<Category>,private val listner : OnItemClickListener) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+class CategoryAdapter(
+    private val categoryList: List<Category>,
+    private val listener: OnItemClickListener
+) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvCategoryName : TextView = itemView.tvCategoryName
-        val tvCategoryType : TextView = itemView.tvCategoryType
-        val imgCategoryItem : ImageView = itemView.imgCategoryItem
-        val btnCategoryItemDelete : ImageButton = itemView.btnCategoryItemDelete
-        val btnCategoryItemEdit : ImageButton = itemView.btnCategoryItemEdit
+        val tvCategoryName: TextView = itemView.tvCategoryName
+        val tvCategoryType: TextView = itemView.tvCategoryType
+        val imgCategoryItem: ImageView = itemView.imgCategoryItem
+        val btnCategoryItemDelete: ImageButton = itemView.btnCategoryItemDelete
+        val btnCategoryItemEdit: ImageButton = itemView.btnCategoryItemEdit
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.category_item,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.category_item, parent, false)
         return CategoryViewHolder(view)
     }
 
@@ -42,20 +41,18 @@ class CategoryAdapter(private val categoryList: List<Category>,private val listn
         when (currentItem.type) {
             "Time" -> holder.imgCategoryItem.setImageResource(R.drawable.ic_timer)
             "Numerical" -> holder.imgCategoryItem.setImageResource(R.drawable.ic_increment)
-
         }
 
         holder.itemView.setOnClickListener {
-            listner.onItemClick(currentItem)
+            listener.onItemClick(currentItem)
         }
 
         holder.btnCategoryItemDelete.setOnClickListener {
-            listner.onItemClickDelete(currentItem)
+            listener.onItemClickDelete(currentItem)
         }
         holder.btnCategoryItemEdit.setOnClickListener {
-            listner.onItemClickEdit(currentItem)
+            listener.onItemClickEdit(currentItem)
         }
-
     }
 
     interface OnItemClickListener {

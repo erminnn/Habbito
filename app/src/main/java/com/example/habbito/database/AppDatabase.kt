@@ -14,7 +14,7 @@ import com.example.habbito.models.Timer
 
 @Database(
     entities = [Category::class, CategoryAdditionalProperty::class, Timer::class, CategoryActivity::class],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

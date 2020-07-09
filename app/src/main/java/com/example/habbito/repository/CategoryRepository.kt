@@ -33,8 +33,8 @@ class CategoryRepository(private val categoryDao: CategoryDao) {
         categoryDao.insertCategoryWithProperty(category, categoryAdditionalProperty);
     }
 
-    suspend fun deleteCategoryWithProperties(id: Long) {
-        categoryDao.deleteCategoryWithProperties(id)
+    suspend fun deleteCategory(id: Long) {
+        categoryDao.deleteCategory(id)
     }
 
 }

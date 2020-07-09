@@ -36,8 +36,8 @@ class CategoryListViewModel(private val repository: CategoryRepository) : ViewMo
         repository.insertCategoryWithProperty(category, categoryAdditionalProperty)
     }
 
-    suspend fun deleteCategoryWithProperties(id: Long) = withContext(IO){
-        repository.deleteCategoryWithProperties(id)
+    suspend fun deleteCategory(id: Long) = withContext(IO){
+        repository.deleteCategory(id)
     }
 
     fun initCategory(id: Long) {
