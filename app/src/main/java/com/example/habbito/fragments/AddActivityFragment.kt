@@ -23,7 +23,7 @@ import java.util.*
 /**
  * A simple [Fragment] subclass.
  */
-class AddTimeActivity : Fragment() {
+class AddActivityFragment : Fragment() {
     var properties: ArrayList<String>? = null
     var selectedProperty = ""
     private lateinit var vm: ActivityListViewModel
@@ -51,24 +51,11 @@ class AddTimeActivity : Fragment() {
             R.layout.support_simple_spinner_dropdown_item,
             properties as MutableList<String>
         )
+        initActivityPropertyListener()
+        initSaveBtnEventListener()
+    }
 
-        spinnerAddTimeActivityProperty.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                }
-
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    selectedProperty = properties!!.get(position)
-                    Log.d("PROBAAAA", selectedProperty)
-                }
-            }
-
+    private fun initSaveBtnEventListener() {
         btnSaveTimeActivity.setOnClickListener {
             val activityName = etAddTimeActivityName.text.toString()
             if (properties!!.size != 0 && selectedProperty == "") {
@@ -91,6 +78,26 @@ class AddTimeActivity : Fragment() {
 
         }
     }
+
+    private fun initActivityPropertyListener() {
+        spinnerAddTimeActivityProperty.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    selectedProperty = properties!!.get(position)
+                    Log.d("PROBAAAA", selectedProperty)
+                }
+            }
+    }
+
     private fun setTitle() {
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.add_activity)
     }

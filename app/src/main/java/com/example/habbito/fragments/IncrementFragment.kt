@@ -44,7 +44,6 @@ class IncrementFragment : Fragment() {
         val repository = ActivityRepository(dao)
         val factory = TimerViewModelFactory(repository, activity?.application!!)
         vm = ViewModelProvider(this, factory).get(ActivityListViewModel::class.java)
-
         val view = inflater.inflate(R.layout.fragment_increment, container, false)
         value = view.findViewById<TextView>(R.id.tv_value)
         val saveBtn = view.findViewById<Button>(R.id.saveBtn)

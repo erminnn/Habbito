@@ -32,9 +32,7 @@ class TimerFragment : Fragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-
-        var v : View =  inflater.inflate(R.layout.fragment_timer, container, false)
+        val v : View =  inflater.inflate(R.layout.fragment_timer, container, false)
         chronometer =  v.findViewById<Chronometer>(R.id.chronometer)
         chronometer.setFormat("00:%s")
         val bundle : Bundle = this.requireArguments()
@@ -48,8 +46,6 @@ class TimerFragment : Fragment() {
         val repository = ActivityRepository(dao)
         val factory = TimerViewModelFactory(repository, activity?.application!!)
         vm = ViewModelProvider(this, factory).get(ActivityListViewModel::class.java)
-
-
         var currentTimerState: String
         vm.getTimerById(id as Long).observe(viewLifecycleOwner, Observer {
             pauseOffset = it.pauseOffset as Long
@@ -69,14 +65,6 @@ class TimerFragment : Fragment() {
             }
         })
 
-
-
-
-
-
-
-
-
         btnTimerStart.setOnClickListener {
             chronometer.base = SystemClock.elapsedRealtime()-pauseOffset
             startTimer()
@@ -89,12 +77,9 @@ class TimerFragment : Fragment() {
         }
     }
 
-
     fun  startTimer(){
-
         chronometer.start();
         timerState = TimerState.Running
-
     }
 
     fun pauseTimer(){
@@ -103,10 +88,9 @@ class TimerFragment : Fragment() {
             timerState = TimerState.Paused
             chronometer.setText(setTimeText(pauseOffset))
             chronometer.stop()
-
-
     }
-    fun stopTimer(){
+
+    private fun stopTimer(){
         base = SystemClock.elapsedRealtime()
         chronometer.base = base
         pauseOffset = 0
@@ -122,12 +106,8 @@ class TimerFragment : Fragment() {
         val hh = if (h < 10) "0$h" else h.toString() + ""
         val mm = if (m < 10) "0$m" else m.toString() + ""
         val ss = if (s < 10) "0$s" else s.toString() + ""
-
-        return hh+":"+mm+":"+ss
+        return "$hh:$mm:$ss"
     }
-
-
-
 
     override fun onStop() {
         super.onStop()
@@ -139,8 +119,6 @@ class TimerFragment : Fragment() {
         }
     }
 
-
-
     companion object {
         @JvmStatic
         fun newInstance(param1: Long) =
@@ -150,13 +128,5 @@ class TimerFragment : Fragment() {
                 }
             }
     }
-
-
-
-
-
-
-
-
 
 }

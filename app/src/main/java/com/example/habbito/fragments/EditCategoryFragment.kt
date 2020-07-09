@@ -43,7 +43,6 @@ class EditCategoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_edit_category, container, false)
         setTitle()
         try {
@@ -61,49 +60,9 @@ class EditCategoryFragment : Fragment() {
         val repository = CategoryRepository(dao)
         val factory = CategoryViewModelFactory(repository)
         vm = ViewModelProvider(this, factory).get(CategoryListViewModel::class.java)
-        vm.getAllPropertiesForCategory(id).observe(viewLifecycleOwner, Observer {
-            it.map { el ->
-                properties.add(el.name)
-            }
-
-            adapter = ArrayAdapter<String>(
-                requireContext(),
-                R.layout.support_simple_spinner_dropdown_item,
-                properties
-            )
-            lvEditCategoryProperty.adapter = adapter
-        })
+        observeCategoryProperties()
         vm.initCategory(id)
-        vm.categoryToEdit.observe(viewLifecycleOwner, Observer {
-            etEditCategoryName.setText(it.name)
-            selectedType = it.type
-            val types = listOf("Time", "Numerical", "Quantitative")
-            val selectedTypeId = types.indexOf(selectedType)
-
-            spinnerEditCategoryType.adapter = ArrayAdapter<String>(
-                requireContext(),
-                R.layout.support_simple_spinner_dropdown_item,
-                types
-            )
-            spinnerEditCategoryType.setSelection(selectedTypeId)
-
-            spinnerEditCategoryType.onItemSelectedListener =
-                object : AdapterView.OnItemSelectedListener {
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                    }
-
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) {
-                        selectedType = types.get(position)
-                    }
-                }
-        })
-
+        observeCategoryToEdit()
         btnEditCategoryProperty.setOnClickListener {
             val property = etEditCategoryProperty.text.toString()
             if (property != "") {
@@ -155,8 +114,48 @@ class EditCategoryFragment : Fragment() {
                 }
                 true
             }
-            else ->
-                super.onOptionsItemSelected(item)
+            else ->  super.onOptionsItemSelected(item)
+        })
+    }
+
+    private fun observeCategoryToEdit() {
+        vm.categoryToEdit.observe(viewLifecycleOwner, Observer {
+            etEditCategoryName.setText(it.name)
+            selectedType = it.type
+            val types = listOf("Time", "Numerical", "Quantitative")
+            val selectedTypeId = types.indexOf(selectedType)
+
+            spinnerEditCategoryType.adapter = ArrayAdapter<String>(
+                requireContext(),
+                R.layout.support_simple_spinner_dropdown_item,
+                types
+            )
+            spinnerEditCategoryType.setSelection(selectedTypeId)
+
+            spinnerEditCategoryType.onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?, view: View?, position: Int, id: Long
+                    ) {
+                        selectedType = types.get(position)
+                    }
+                }
+        })
+    }
+
+    private fun observeCategoryProperties() {
+        vm.getAllPropertiesForCategory(id).observe(viewLifecycleOwner, Observer {
+            it.map { el -> properties.add(el.name) }
+            adapter = ArrayAdapter<String>(
+                requireContext(),
+                R.layout.support_simple_spinner_dropdown_item,
+                properties
+            )
+            lvEditCategoryProperty.adapter = adapter
         })
     }
 

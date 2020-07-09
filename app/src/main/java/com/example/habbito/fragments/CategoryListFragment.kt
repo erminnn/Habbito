@@ -42,20 +42,13 @@ class CategoryListFragment : Fragment(), OnItemClickListener {
         return view
     }
 
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val dao = AppDatabase.getInstance(requireContext())!!.categoryDao
         val repository = CategoryRepository(dao)
         val factory = CategoryViewModelFactory(repository)
         vm = ViewModelProvider(this, factory).get(CategoryListViewModel::class.java)
-        vm.allCategories.observe(viewLifecycleOwner, Observer { items ->
-            categoryRecyclerView.also {
-                it.layoutManager = LinearLayoutManager(requireContext())
-                it.adapter = CategoryAdapter(items, this)
-            }
-        })
-
+        observeAllCategories()
         btnAddNewCategory.setOnClickListener {
             val addCategoryFragment = AddCategoryFragment()
             requireActivity().supportFragmentManager.beginTransaction().apply {
@@ -97,6 +90,15 @@ class CategoryListFragment : Fragment(), OnItemClickListener {
 
     override fun onItemClickDelete(category: Category) {
         uiScope.launch { vm.deleteCategoryWithProperties(category.id) }
+    }
+
+    private fun observeAllCategories() {
+        vm.allCategories.observe(viewLifecycleOwner, Observer { items ->
+            categoryRecyclerView.also {
+                it.layoutManager = LinearLayoutManager(requireContext())
+                it.adapter = CategoryAdapter(items, this)
+            }
+        })
     }
 
     private fun setTitle() {

@@ -41,19 +41,8 @@ class ActivityListFragment : Fragment(), OnTimeItemClickListener {
             vm = ViewModelProvider(this, factory).get(ActivityListViewModel::class.java)
             vm.categoryId = bundle.getLong("categoryId")
             vm.initializeActivities()
-            vm.initializeCategoryProperties(vm.categoryId).observe(
-                viewLifecycleOwner, androidx.lifecycle.Observer {
-                    t -> properties = ArrayList(t.map { categoryAdditionalProperty -> categoryAdditionalProperty.name })
-                }
-            )
-            vm.allCategoryActivities.observe(
-                viewLifecycleOwner,
-                androidx.lifecycle.Observer { items ->
-                    timeActivityRecyclerView.also {
-                        it.layoutManager = LinearLayoutManager(requireContext())
-                        it.adapter = ActivityAdapter(items, this)
-                    }
-                })
+            observeCategoryProperties()
+            observeActivities()
         } catch (e: Exception) {
             Log.d("Error", e.toString())
         }
@@ -62,9 +51,8 @@ class ActivityListFragment : Fragment(), OnTimeItemClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         btnAddNewTimeActivity.setOnClickListener {
-            val addTimeActivity = AddTimeActivity()
+            val addTimeActivity = AddActivityFragment()
             val bundle = Bundle()
             bundle.putStringArrayList("properties", properties)
             bundle.putLong("categoryId", vm.categoryId)
@@ -76,16 +64,35 @@ class ActivityListFragment : Fragment(), OnTimeItemClickListener {
     override fun onItemClick(categoryActivity: CategoryActivity) {
         uiScope.launch {
             val category = vm.getCategory()
-            val fragment: Fragment?
-            fragment =  if (category.type == "Time") TimerFragment.newInstance(vm.getTimerByTimeActivity(categoryActivity.id).id)
-                        else IncrementFragment.newInstance(categoryActivity.currentValue)
+            val fragment = if (category.type == "Time") TimerFragment.newInstance(
+                vm.getTimerByTimeActivity(categoryActivity.id).id
+            )
+            else IncrementFragment.newInstance(categoryActivity.currentValue)
             launchFragment(fragment)
         }
     }
 
-    private fun launchFragment(
-        fragment: Fragment
-    ) {
+    private fun observeActivities() {
+        vm.allCategoryActivities.observe(
+            viewLifecycleOwner,
+            androidx.lifecycle.Observer { items ->
+                timeActivityRecyclerView.also {
+                    it.layoutManager = LinearLayoutManager(requireContext())
+                    it.adapter = ActivityAdapter(items, this)
+                }
+            })
+    }
+
+    private fun observeCategoryProperties() {
+        vm.initializeCategoryProperties(vm.categoryId).observe(
+            viewLifecycleOwner, androidx.lifecycle.Observer { t ->
+                properties =
+                    ArrayList(t.map { categoryAdditionalProperty -> categoryAdditionalProperty.name })
+            }
+        )
+    }
+
+    private fun launchFragment(fragment: Fragment) {
         requireActivity().supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentHolder, fragment)
             addToBackStack(null)

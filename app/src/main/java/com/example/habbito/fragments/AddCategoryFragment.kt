@@ -24,11 +24,15 @@ import kotlinx.android.synthetic.main.fragment_add_category.*
  * A simple [Fragment] subclass.
  */
 class AddCategoryFragment : Fragment() {
-    lateinit var properties : MutableList<String>
-    lateinit var selectedType : String
+    lateinit var properties: MutableList<String>
+    lateinit var selectedType: String
     private lateinit var vm: AddCategoryViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_add_category, container, false)
         setTitle()
         return view
@@ -39,74 +43,92 @@ class AddCategoryFragment : Fragment() {
         val dao = AppDatabase.getInstance(requireContext())!!.categoryDao
         val repository = CategoryRepository(dao)
         val factory = AddCategoryViewModelFactory(repository)
-        vm = ViewModelProvider(this,factory).get(AddCategoryViewModel::class.java)
-
-
-
+        vm = ViewModelProvider(this, factory).get(AddCategoryViewModel::class.java)
         val types = vm.types
         properties = vm.properties
         selectedType = vm.selectedType
 
+        spinnerAddCategoryType.adapter = ArrayAdapter(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            types
+        )
 
-        spinnerAddCategoryType.adapter  = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item,types)
+        initCategoryTypesListener(types)
 
-            spinnerAddCategoryType.onItemSelectedListener = object  : AdapterView.OnItemSelectedListener{
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                selectedType = types.get(position)
-            }
-        }
-
-        val adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item,properties)
+        val adapter = ArrayAdapter(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            properties
+        )
         lvCategoryProperty.adapter = adapter
-        btnAddCategoryProperty.setOnClickListener {
-            val property = etAddCategoryProperty.text.toString()
-            if(property != ""){
-            properties.add(property)
-            adapter.notifyDataSetChanged()
-            etAddCategoryProperty.setText("")
-            }else{
-                Toast.makeText(requireContext(),"Property name is empty",Toast.LENGTH_SHORT).show()
-            }
-        }
-
-
-
-    setHasOptionsMenu(true)
+        initAddCategoryPropertyListener(adapter)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.add_category_menu, menu);
-
         super.onCreateOptionsMenu(menu, inflater)
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return (when(item.itemId) {
+        return (when (item.itemId) {
             R.id.btnSaveCategory -> {
                 val categoryName = etAddCategoryName.text.toString()
-                if(categoryName != "") {
+                if (categoryName != "") {
                     val propertyList = mutableListOf<CategoryAdditionalProperty>()
                     val fragmentManager = activity!!.supportFragmentManager
                     val categoryFragment = CategoryListFragment()
-                        properties.map { el ->
-                            propertyList.add(CategoryAdditionalProperty(el, null))
-                        }
-                    vm.insertCategoryWithProperty(Category(categoryName,selectedType),propertyList)
+                    properties.map { el ->
+                        propertyList.add(CategoryAdditionalProperty(el, null))
+                    }
+                    vm.insertCategoryWithProperty(
+                        Category(categoryName, selectedType),
+                        propertyList
+                    )
                     requireActivity().supportFragmentManager.beginTransaction().apply {
-                        replace(R.id.fragmentHolder,categoryFragment)
+                        replace(R.id.fragmentHolder, categoryFragment)
                         commit()
                     }
-                }else{
-                    Toast.makeText(requireContext(),"Category name is empty",Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(requireContext(), "Category name is empty", Toast.LENGTH_SHORT)
+                        .show()
                 }
                 true
             }
-            else ->
-                super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         })
+    }
+
+    private fun initAddCategoryPropertyListener(adapter: ArrayAdapter<String>) {
+        btnAddCategoryProperty.setOnClickListener {
+            val property = etAddCategoryProperty.text.toString()
+            if (property != "") {
+                properties.add(property)
+                adapter.notifyDataSetChanged()
+                etAddCategoryProperty.setText("")
+            } else {
+                Toast.makeText(requireContext(), "Property name is empty", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+    }
+
+    private fun initCategoryTypesListener(types: List<String>) {
+        spinnerAddCategoryType.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    selectedType = types[position]
+                }
+            }
     }
 
     private fun setTitle() {
