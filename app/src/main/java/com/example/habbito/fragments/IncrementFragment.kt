@@ -24,8 +24,7 @@ import com.example.habbito.viewmodelfactory.TimerViewModelFactory
 class IncrementFragment : Fragment() {
     private val CURRENT_VALUE = "id"
     private var currValue: Long? = null
-    private var param2: String? = null
-    lateinit var value: TextView
+    private lateinit var value: TextView
     private lateinit var vm: ActivityListViewModel
 
 

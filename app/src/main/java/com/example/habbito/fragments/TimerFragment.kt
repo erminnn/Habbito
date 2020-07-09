@@ -22,20 +22,24 @@ import kotlinx.android.synthetic.main.fragment_timer.*
  * A simple [Fragment] subclass.
  */
 class TimerFragment : Fragment() {
-    private lateinit var chronometer: Chronometer
-    enum class TimerState {Stopped,Running,Paused}
-    var timerState = TimerState.Stopped
-    private var pauseOffset : Long = 0
-    private var base : Long = 0
-    private var id : Long? = 0
+    enum class TimerState { Stopped, Running, Paused }
+
     private lateinit var vm: ActivityListViewModel
+    private lateinit var chronometer: Chronometer
+    private var timerState = TimerState.Stopped
+    private var pauseOffset: Long = 0
+    private var base: Long = 0
+    private var id: Long? = 0
 
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val v : View =  inflater.inflate(R.layout.fragment_timer, container, false)
-        chronometer =  v.findViewById<Chronometer>(R.id.chronometer)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val v: View = inflater.inflate(R.layout.fragment_timer, container, false)
+        chronometer = v.findViewById<Chronometer>(R.id.chronometer)
         chronometer.setFormat("00:%s")
-        val bundle : Bundle = this.requireArguments()
+        val bundle: Bundle = this.requireArguments()
         id = bundle.getLong("timer_id")
         return v;
     }
@@ -66,7 +70,7 @@ class TimerFragment : Fragment() {
         })
 
         btnTimerStart.setOnClickListener {
-            chronometer.base = SystemClock.elapsedRealtime()-pauseOffset
+            chronometer.base = SystemClock.elapsedRealtime() - pauseOffset
             startTimer()
         }
         btnTimerStop.setOnClickListener {
@@ -77,20 +81,20 @@ class TimerFragment : Fragment() {
         }
     }
 
-    fun  startTimer(){
+    private fun startTimer() {
         chronometer.start();
         timerState = TimerState.Running
     }
 
-    fun pauseTimer(){
-            pauseOffset = SystemClock.elapsedRealtime() - chronometer.base
-            base = SystemClock.elapsedRealtime() - pauseOffset
-            timerState = TimerState.Paused
-            chronometer.setText(setTimeText(pauseOffset))
-            chronometer.stop()
+    private fun pauseTimer() {
+        pauseOffset = SystemClock.elapsedRealtime() - chronometer.base
+        base = SystemClock.elapsedRealtime() - pauseOffset
+        timerState = TimerState.Paused
+        chronometer.text = setTimeText(pauseOffset)
+        chronometer.stop()
     }
 
-    private fun stopTimer(){
+    private fun stopTimer() {
         base = SystemClock.elapsedRealtime()
         chronometer.base = base
         pauseOffset = 0
@@ -98,7 +102,7 @@ class TimerFragment : Fragment() {
         chronometer.stop()
     }
 
-    fun setTimeText(milis : Long) : String {
+    private fun setTimeText(milis: Long): String {
         val time: Long = milis
         val h = (time / 3600000).toInt()
         val m = (time - h * 3600000).toInt() / 60000
@@ -111,11 +115,11 @@ class TimerFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        if(timerState == TimerState.Running) {
+        if (timerState == TimerState.Running) {
             pauseOffset = SystemClock.elapsedRealtime() - chronometer.base
-          vm.updateTimer(chronometer.base,pauseOffset,id as Long,timerState.toString())
-        }else{
-            vm.updateTimer(chronometer.base,pauseOffset,id as Long,timerState.toString())
+            vm.updateTimer(chronometer.base, pauseOffset, id as Long, timerState.toString())
+        } else {
+            vm.updateTimer(chronometer.base, pauseOffset, id as Long, timerState.toString())
         }
     }
 
