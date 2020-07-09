@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.habbito.R
 import com.example.habbito.database.AppDatabase
 import com.example.habbito.models.CategoryActivity
-import com.example.habbito.repository.TimerRepository
+import com.example.habbito.repository.ActivityRepository
 import com.example.habbito.viewmodel.ActivityListViewModel
 import com.example.habbito.viewmodelfactory.TimerViewModelFactory
 import kotlinx.android.synthetic.main.fragment_add_time_activity.*
@@ -38,8 +38,8 @@ class AddTimeActivity : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val dao = AppDatabase.getInstance(requireContext())!!.timerDao
-        val repository = TimerRepository(dao)
+        val dao = AppDatabase.getInstance(requireContext())!!.activityDao
+        val repository = ActivityRepository(dao)
         val factory = TimerViewModelFactory(repository, activity?.application!!)
         vm = ViewModelProvider(this, factory).get(ActivityListViewModel::class.java)
         val bundle: Bundle = this.requireArguments()

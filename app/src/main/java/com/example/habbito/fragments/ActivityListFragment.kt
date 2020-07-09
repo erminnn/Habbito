@@ -2,20 +2,18 @@ package com.example.habbito.fragments
 
 import android.os.Bundle
 import android.util.Log
-import android.view.FrameMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.habbito.R
-import com.example.habbito.adapters.TimeAdapter
-import com.example.habbito.adapters.TimeAdapter.OnTimeItemClickListener
+import com.example.habbito.adapters.ActivityAdapter
+import com.example.habbito.adapters.ActivityAdapter.OnTimeItemClickListener
 import com.example.habbito.database.AppDatabase
 import com.example.habbito.models.CategoryActivity
-import com.example.habbito.repository.TimerRepository
+import com.example.habbito.repository.ActivityRepository
 import com.example.habbito.viewmodel.ActivityListViewModel
 import com.example.habbito.viewmodelfactory.TimerViewModelFactory
 import kotlinx.android.synthetic.main.fragment_time_activity.*
@@ -37,8 +35,8 @@ class ActivityListFragment : Fragment(), OnTimeItemClickListener {
         val view: View = inflater.inflate(R.layout.fragment_time_activity, container, false)
         try {
             val bundle: Bundle = this.requireArguments()
-            val dao = AppDatabase.getInstance(requireContext())!!.timerDao
-            val repository = TimerRepository(dao)
+            val dao = AppDatabase.getInstance(requireContext())!!.activityDao
+            val repository = ActivityRepository(dao)
             val factory = TimerViewModelFactory(repository, activity?.application!!)
             vm = ViewModelProvider(this, factory).get(ActivityListViewModel::class.java)
             vm.categoryId = bundle.getLong("categoryId")
@@ -53,7 +51,7 @@ class ActivityListFragment : Fragment(), OnTimeItemClickListener {
                 androidx.lifecycle.Observer { items ->
                     timeActivityRecyclerView.also {
                         it.layoutManager = LinearLayoutManager(requireContext())
-                        it.adapter = TimeAdapter(items, this)
+                        it.adapter = ActivityAdapter(items, this)
                     }
                 })
         } catch (e: Exception) {

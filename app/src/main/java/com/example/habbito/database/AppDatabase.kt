@@ -4,10 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.habbito.dao.CategoryDao
-import com.example.habbito.dao.TimerDao
+import com.example.habbito.dao.ActivityDao
 import com.example.habbito.models.Category
 import com.example.habbito.models.CategoryActivity
 import com.example.habbito.models.CategoryAdditionalProperty
@@ -21,7 +19,7 @@ import com.example.habbito.models.Timer
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract val categoryDao: CategoryDao
-    abstract val timerDao: TimerDao
+    abstract val activityDao: ActivityDao
 
     companion object {
         @Volatile

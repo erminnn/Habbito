@@ -14,7 +14,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 
 @Dao
-interface TimerDao {
+interface ActivityDao {
     @Insert
     suspend fun insertTimer(timer: Timer): Long
 

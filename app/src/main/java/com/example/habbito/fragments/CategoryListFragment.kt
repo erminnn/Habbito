@@ -103,5 +103,4 @@ class CategoryListFragment : Fragment(), OnItemClickListener {
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.habito)
     }
 
-
 }

@@ -1,17 +1,16 @@
 package com.example.habbito.viewmodel
 
-import android.app.Application
 import androidx.lifecycle.*
 import com.example.habbito.models.Category
 import com.example.habbito.models.CategoryActivity
 import com.example.habbito.models.CategoryAdditionalProperty
 import com.example.habbito.models.Timer
-import com.example.habbito.repository.TimerRepository
+import com.example.habbito.repository.ActivityRepository
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 
 
-class ActivityListViewModel(private val repository: TimerRepository) : ViewModel() {
+class ActivityListViewModel(private val repository: ActivityRepository) : ViewModel() {
     val allTimers: LiveData<List<Timer>> = repository.allTimers
     var categoryId = 0L
     var allCategoryActivities: MutableLiveData<List<CategoryActivity>?> = MutableLiveData()
