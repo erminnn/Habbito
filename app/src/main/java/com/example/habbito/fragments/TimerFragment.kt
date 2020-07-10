@@ -62,7 +62,6 @@ class TimerFragment : Fragment() {
                 timerState = TimerState.Paused
                 chronometer.setText(setTimeText(pauseOffset))
             } else {
-                Log.d("FRAG","usaoooooooo runing")
                 chronometer.base = it.startBase
                 timerState = TimerState.Running
                 startTimer()

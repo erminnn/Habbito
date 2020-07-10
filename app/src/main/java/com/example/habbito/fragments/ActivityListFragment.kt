@@ -12,9 +12,11 @@ import com.example.habbito.R
 import com.example.habbito.adapters.ActivityAdapter
 import com.example.habbito.adapters.ActivityAdapter.OnTimeItemClickListener
 import com.example.habbito.database.AppDatabase
+import com.example.habbito.models.Category
 import com.example.habbito.models.CategoryActivity
 import com.example.habbito.repository.ActivityRepository
 import com.example.habbito.viewmodel.ActivityListViewModel
+import com.example.habbito.viewmodel.AddCategoryViewModel.*
 import com.example.habbito.viewmodelfactory.TimerViewModelFactory
 import kotlinx.android.synthetic.main.fragment_time_activity.*
 import kotlinx.coroutines.*
@@ -31,7 +33,6 @@ class ActivityListFragment : Fragment(), OnTimeItemClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_time_activity, container, false)
         try {
             val bundle: Bundle = this.requireArguments()
@@ -64,11 +65,19 @@ class ActivityListFragment : Fragment(), OnTimeItemClickListener {
     override fun onItemClick(categoryActivity: CategoryActivity) {
         uiScope.launch {
             val category = vm.getCategory()
-            val fragment = if (category.type == "Time") TimerFragment.newInstance(
-                vm.getTimerByTimeActivity(categoryActivity.id).id
-            )
-            else IncrementFragment.newInstance(categoryActivity.currentValue)
+            val fragment = getActivityFragment(category, categoryActivity)
             launchFragment(fragment)
+        }
+    }
+
+    private suspend fun getActivityFragment(
+        category: Category,
+        categoryActivity: CategoryActivity
+    ): Fragment {
+        return when (category.type) {
+            CategoryType.Time.toString() -> TimerFragment.newInstance(vm.getTimerByTimeActivity(categoryActivity.id).id)
+            CategoryType.Incremental.toString() -> IncrementFragment.newInstance(categoryActivity.currentValue)
+            else -> QuantityFragment.newInstance(categoryActivity.currentValue)
         }
     }
 

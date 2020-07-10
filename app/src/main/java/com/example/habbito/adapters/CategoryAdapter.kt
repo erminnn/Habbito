@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.habbito.R
 import com.example.habbito.models.Category
+import com.example.habbito.viewmodel.AddCategoryViewModel.*
 import kotlinx.android.synthetic.main.category_item.view.*
 
 
@@ -39,8 +40,9 @@ class CategoryAdapter(
         holder.tvCategoryName.text = currentItem.name
         holder.tvCategoryType.text = currentItem.type
         when (currentItem.type) {
-            "Time" -> holder.imgCategoryItem.setImageResource(R.drawable.ic_timer)
-            "Numerical" -> holder.imgCategoryItem.setImageResource(R.drawable.ic_increment)
+            CategoryType.Time.toString() -> holder.imgCategoryItem.setImageResource(R.drawable.ic_timer)
+            CategoryType.Incremental.toString() -> holder.imgCategoryItem.setImageResource(R.drawable.ic_increment)
+            CategoryType.Quantitative.toString() -> holder.imgCategoryItem.setImageResource(R.drawable.ic_pile)
         }
 
         holder.itemView.setOnClickListener {

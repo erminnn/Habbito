@@ -11,4 +11,6 @@
     <string name="edit_category">Edit category</string>
     <string name="add_activity">Add activity</string>
     <string name="name">Name</string>
+    <string name="save">save</string>
+    <string name="quantity_value">Quantity value</string>
 </resources>
